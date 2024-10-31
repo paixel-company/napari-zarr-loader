@@ -70,11 +70,14 @@ def zarr_reader(path: str) -> List[Tuple[Any, dict]]:
 
     # Prepare metadata
     meta = {
-        'name': channel_names,
+        'name': 'Zarr Data',
         'multiscale': True,
         'contrast_limits': None,  # Will compute below
         'scale': (1.0, 1.0, 1.0),  # Placeholder, will adjust if voxel sizes are available
-        'metadata': {},  # Include any additional metadata if available
+        'metadata': {
+            'fileName': path,  # Include the file path here
+            # Include any additional metadata if available
+        },
         'channel_axis': channel_axis,  # None if single channel
     }
 

@@ -5,7 +5,7 @@ import napari
 from magicgui import magic_factory
 from napari_plugin_engine import napari_hook_implementation
 from napari.layers import Image
-from .reader import zarr_reader
+from .zarr_reader import zarr_reader  # Adjust import if necessary
 
 @magic_factory(
     auto_call=False,
@@ -20,7 +20,7 @@ def resolution_change(
     Select the desired resolution level and click 'Update' to reload the data.
     """
 
-    # Find the first Image layer with 'metadata' containing 'fileName'
+    # Find the first Image layer with 'fileName' in its metadata
     image_layer = None
     for layer in viewer.layers:
         if isinstance(layer, Image) and 'fileName' in layer.metadata:
@@ -58,7 +58,7 @@ def resolution_change(
         if layer_name in existing_layer_names:
             viewer.layers.remove(layer_name)
 
-    # Add the new layers to the viewer
+    # Add the new layer to the viewer
     for data_tuple in layer_data_list:
         data, meta = data_tuple
         viewer.add_image(data, **meta)

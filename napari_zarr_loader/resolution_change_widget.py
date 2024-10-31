@@ -5,7 +5,7 @@ import napari
 from magicgui import magic_factory
 from napari_plugin_engine import napari_hook_implementation
 from napari.layers import Image
-from .zarr_reader import zarr_reader  # Adjust import if necessary
+from .reader import zarr_reader  # Adjust import if necessary
 
 @magic_factory(
     auto_call=False,

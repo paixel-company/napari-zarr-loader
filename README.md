@@ -2,13 +2,13 @@
 
 # Description
 
-This plugin enables viewing of Bitplane Imaris files, including very large datasets.  The GIFs below demonstrate rendering of a ~2TB IMS file containing a 2 color whole mouse brain.  The plugin has been tested on datasets as large as 20TB.
+This plugin enables viewing of Bitplane Imaris files, including very large datasets.  The GIFs below demonstrate rendering of a ~2TB zarr file containing a 2 color whole mouse brain.  The plugin has been tested on datasets as large as 20TB.
 
 **NOTE: For this plugin to work "File/Preferences/Experimental/Render Images Asynchronously" must be selected.**
 
-### Open IMS file:
+### Open zarr file:
 
-![Open IMS file GIF](https://i.imgur.com/ByHb0wI.gif "Open IMS file")
+![Open zarr file GIF](https://i.imgur.com/ByHb0wI.gif "Open zarr file")
 
 
 
@@ -21,7 +21,7 @@ A plugin is provided to dynamically reload the data after selecting the lowest r
 ### Features
 
 * Multiscale Rendering
-  * Image pyramids which are present in the native IMS format are automatically added to napari during file loading.
+  * Image pyramids which are present in the native zarr format are automatically added to napari during file loading.
 * Chunks are implemented by dask and matched to the chunk sizes stored in each dataset.  (Napari appears to only ask for 2D chunks - unclear how helpful this feature is currently)
 * Successfully handles multi-terabyte multi-timepoint multi-channel datasets.
 * Tested with all sample files provided by Bitplane.
@@ -57,11 +57,11 @@ You can install `napari-imaris-loader` via [pip]:
 
 ##### <u>v0.1.2:</u>
 
-**Fixed:** Issue where .ims files containing a single color 2D image would not open.
+**Fixed:** Issue where .zarr files containing a single color 2D image would not open.
 
 **Fixed:** Issue where using the widget to change resolutions while in 3D rendering would cause a crash.  Now the viewer is automatically forced into 2D rendering mode when the widget is used.
 
-**Dependency change:** The loader is now dependent in a separate package for loading IMS files.  https://pypi.org/project/imaris-ims-file-reader/
+**Dependency change:** The loader is now dependent in a separate package for loading zarr files.  https://pypi.org/project/imaris-zarr-file-reader/
 
 **v0.1.3:**
 
@@ -76,7 +76,7 @@ Add napari to install requirements for plugin compatibility
 Changes to napari:
 
 - now requires napari[all] upon install.
-- requires >=v0.1.5 of imaris-ims-file-reader
+- requires >=v0.1.5 of imaris-zarr-file-reader
 
 **v0.1.6:**
 
@@ -84,7 +84,7 @@ Changes to napari:
 
 **v0.1.7:**
 
-- For squeeze_output=False when opening .ims file for Napari compatibility
+- For squeeze_output=False when opening .zarr file for Napari compatibility
 
 **v0.1.8:**
 

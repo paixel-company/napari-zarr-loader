@@ -1,5 +1,5 @@
 site_name: napari-imaris-loader
-site_description: Napari plugin for loading Bitplane imaris files '.ims'
+site_description: Napari plugin for loading Bitplane imaris files '.zarr'
 site_author: Alan M Watson
 
 theme: readthedocs

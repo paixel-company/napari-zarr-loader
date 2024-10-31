@@ -1,14 +1,14 @@
 import os
-from napari_imaris_loader import napari_get_reader
+from napari_zarr_loader import napari_get_reader
 
 
 # tmp_path is a pytest fixture
-def test_reader(tmp_path='brain_crop3.ims'):
+def test_reader(tmp_path='brain_crop3.zarr'):
     """An example of how you might test your plugin."""
     
     path = os.path.join(os.path.dirname(os.path.realpath(__file__)),tmp_path)
     # Test whether we get a callable reader function
-    #reader = napari_get_reader('/path/to/a/fake.ims')
+    #reader = napari_get_reader('/path/to/a/fake.zarr')
     reader = napari_get_reader(path)
     assert callable(reader)
 

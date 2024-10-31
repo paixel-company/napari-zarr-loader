@@ -6,7 +6,7 @@ from magicgui import magic_factory
 from napari_plugin_engine import napari_hook_implementation
 from typing import List
 from napari.layers import Image
-from .zarr_reader import zarr_reader
+from .reader import zarr_reader
 
 @magic_factory(
     auto_call=False,

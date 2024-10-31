@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='napari-zarr-reader',
+    name='napari-zarr-loader',
     version='0.1.0',
     author='Your Name',
     description='A napari plugin to read Zarr files with resolution levels.',
@@ -17,7 +17,7 @@ setup(
     ],
     entry_points={
         'napari.plugin': [
-            'napari-zarr-reader = napari_zarr_reader',
+            'napari-zarr-loader = napari_zarr_loader',
         ],
     },
 )

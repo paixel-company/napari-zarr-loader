@@ -1,0 +1,5 @@
+napari
+napari-plugin-engine
+magicgui
+zarr
+dask[array]

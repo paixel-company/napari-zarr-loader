@@ -1,0 +1,2 @@
+[napari.plugin]
+napari-zarr-loader = napari_zarr_loader

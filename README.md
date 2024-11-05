@@ -1,124 +1,112 @@
+# napari-zarr-loader
 
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-# Description
+A napari plugin for loading and visualizing Zarr files converted from IMS (Imaris) files, with support for multi-resolution datasets and dynamic resolution level changes.
 
-This plugin enables viewing of Bitplane Imaris files, including very large datasets.  The GIFs below demonstrate rendering of a ~2TB zarr file containing a 2 color whole mouse brain.  The plugin has been tested on datasets as large as 20TB.
+## Description
 
-**NOTE: For this plugin to work "File/Preferences/Experimental/Render Images Asynchronously" must be selected.**
+**napari-zarr-loader** is a plugin for [napari](https://napari.org/), an open-source image viewer for multi-dimensional data. This plugin allows users to load Zarr files, particularly those converted from IMS files, into napari for visualization and analysis. It supports multi-resolution datasets and provides a widget to change resolution levels on-the-fly. The plugin also handles multi-channel data, allowing channels to be loaded either independently or stacked together.
 
-### Open zarr file:
+## Features
 
-![Open zarr file GIF](https://i.imgur.com/ByHb0wI.gif "Open zarr file")
-
-
-
-### Render in 3D:
-
-A plugin is provided to dynamically reload the data after selecting the lowest resolution level to be included in the viewer.  Since napari only renders the lowest resolution, the user can use this plugin to control the quality of 3D rendering.  See features and limitations for tips on suggested usage.
-
-![3D Rendering and Quality Adjustment GIF](https://i.imgur.com/MZNlWtM.gif "3D Rendering and Quality Adjustment")
-
-### Features
-
-* Multiscale Rendering
-  * Image pyramids which are present in the native zarr format are automatically added to napari during file loading.
-* Chunks are implemented by dask and matched to the chunk sizes stored in each dataset.  (Napari appears to only ask for 2D chunks - unclear how helpful this feature is currently)
-* Successfully handles multi-terabyte multi-timepoint multi-channel datasets.
-* Tested with all sample files provided by Bitplane.
-* Higher 3D rendering quality is enabled by a widget that reloads data after specifying the lowest resolution level (higher number = lower resolution) to be included in the multiscale series.
-
-### Known Issues / limitations
-
-* Currently, this is **only an image loader**, and there are no features for loading or viewing objects
-* Napari sometimes throws errors indicating that it expected a 3D or 5D array but receives the other.
-  * This sometimes *but relatively rarely* causes napari to crash
-  * Would like to enable Asynchronous Tiling of Images, but this results in more instability and causes crashes.
-
-
-----------------------------------
-
-This [napari] plugin was generated with [Cookiecutter] using with [@napari]'s [cookiecutter-napari-plugin] template.
-
-<!--
-Don't miss the full getting started guide to set up your new package:
-https://github.com/napari/cookiecutter-napari-plugin#getting-started
-
-and review the napari docs for plugin developers:
-https://napari.org/docs/plugins/index.html
--->
+- **Load Zarr Files Converted from IMS Files**: Easily load Zarr files that have been converted from Imaris IMS files.
+- **Multi-Resolution Support**: Navigate through different resolution levels of your dataset.
+- **Dynamic Resolution Change Widget**: Use the provided widget to change resolution levels without reloading the file manually.
+- **Multi-Channel Handling**: Load multi-channel data either as separate layers or stacked along a specified axis.
+- **Voxel Size Extraction**: Automatically extract and apply voxel size metadata if available in the file.
 
 ## Installation
 
-You can install `napari-imaris-loader` via [pip]:
+You can install `napari-zarr-loader` via `pip`:
 
-    pip install napari-imaris-loader
+```bash
+pip install napari-zarr-loader
+git clone https://github.com/paixel/napari-zarr-loader.git
+cd napari-zarr-loader
+pip install -e .
+```
+## Usage
+- **Loading Zarr Files**
+	1.	**Open napari**: Launch napari from the command line:
+  ```bash
+  napari
+  ```
+  2.	**Load Your Zarr File**: In napari, go to File > Open... and select your .zarr file. If prompted to choose a plugin, select napari-zarr-loader.
 
-## Change Log:
+- **Using the Resolution Change Widget**
 
-##### <u>v0.1.2:</u>
+	1.	**Access the Widget**: Go to Plugins > napari-zarr-loader > Resolution Change to open the widget.
+	2.	**Select Resolution Level**:
+	•	Use the resolution_level slider or input box to select the desired resolution level.
+	•	0 corresponds to the highest resolution available in the dataset.
+	3.	**Update the Data**:
+	•	Click the Update button to reload the data at the selected resolution level.
+	•	The existing layers loaded by this plugin will be updated accordingly.
 
-**Fixed:** Issue where .zarr files containing a single color 2D image would not open.
+- **Handling Multi-Channel Data**
 
-**Fixed:** Issue where using the widget to change resolutions while in 3D rendering would cause a crash.  Now the viewer is automatically forced into 2D rendering mode when the widget is used.
+	•	Independent Channels: By default, each channel in the dataset is loaded as a separate layer.
+	•	Adjusting Channel Loading:
+	•	If you prefer to stack channels together, you can modify the colorsIndependant parameter in the code to False.
+	•	This will load all channels into a single layer with a specified channel_axis.
 
-**Dependency change:** The loader is now dependent in a separate package for loading zarr files.  https://pypi.org/project/imaris-zarr-file-reader/
+## Example Code Snippet
+Here’s how you might call the zarr_reader function in your code:
+```python
+from napari_zarr_loader import zarr_reader
 
-**v0.1.3:**
+# Load data at resolution level 0
+layer_data_list = zarr_reader('path_to_your_file.zarr', resolution_level=0)
 
-Documentation
+# Add data to napari viewer
+for data, meta in layer_data_list:
+    viewer.add_image(data, **meta)
+```
+## Requirements
 
-**v0.1.4:**
-
-Add napari to install requirements for plugin compatibility
-
-**v0.1.5:**
-
-Changes to napari:
-
-- now requires napari[all] upon install.
-- requires >=v0.1.5 of imaris-zarr-file-reader
-
-**v0.1.6:**
-
-- Fix issue #7 where contrastLimits possibly unbound in reader
-
-**v0.1.7:**
-
-- For squeeze_output=False when opening .zarr file for Napari compatibility
-
-**v0.1.8:**
-
-- Add automatic determination of contrast_limits
-- Fix bug in squeeze_output
+	•	Python 3.7+
+	•	napari 0.4.5 or later
+	•	Dependencies:
+	•	numpy
+	•	dask
+	•	zarr
+	•	magicgui
+	•	napari-plugin-engine
 
 ## Contributing
 
-Contributions are very welcome. Tests can be run with [tox], please ensure
-the coverage at least stays the same before you submit a pull request.
+Contributions are welcome! If you’d like to contribute to this project, please follow these steps:
+
+	1.	Fork the Repository: Click the “Fork” button at the top right of this page.
+	2.	Clone Your Fork:
+```bash
+git clone https://github.com/paixel/napari-zarr-loader.git
+```
+	3.	Create a New Branch:
+```bash
+git checkout -b feature/your-feature-name
+```
+	4.	Make Your Changes: Implement your feature or bug fix.
+	5.	Commit Your Changes:
+```bash
+git commit -am 'Add new feature'
+```
+  6.	Push to Your Fork:
+```bash
+git push origin feature/your-feature-name
+```
+  7.	Submit a Pull Request: Open a pull request to the main repository’s master branch.
+## Issues
+
+If you encounter any problems or have suggestions, please open an issue on the GitHub issues page.
 
 ## License
 
-Distributed under the terms of the [BSD-3] license,
-"napari-imaris-loader" is free and open source software
+This project is licensed under the terms of the MIT license. See the LICENSE file for details.
 
-## Issues
+## Acknowledgments
 
-If you encounter any problems, please [file an issue] along with a detailed description.
-
-[napari]: https://github.com/napari/napari
-[Cookiecutter]: https://github.com/audreyr/cookiecutter
-[@napari]: https://github.com/napari
-[MIT]: http://opensource.org/licenses/MIT
-[BSD-3]: http://opensource.org/licenses/BSD-3-Clause
-[GNU GPL v3.0]: http://www.gnu.org/licenses/gpl-3.0.txt
-[GNU LGPL v3.0]: http://www.gnu.org/licenses/lgpl-3.0.txt
-[Apache Software License 2.0]: http://www.apache.org/licenses/LICENSE-2.0
-[Mozilla Public License 2.0]: https://www.mozilla.org/media/MPL/2.0/index.txt
-[cookiecutter-napari-plugin]: https://github.com/napari/cookiecutter-napari-plugin
-
-[file an issue]: https://github.com/AlanMWatson/napari-imaris-loader/issues
-
-[napari]: https://github.com/napari/napari
-[tox]: https://tox.readthedocs.io/en/latest/
-[pip]: https://pypi.org/project/pip/
-[PyPI]: https://pypi.org/
+	•	Thanks to the napari team for providing a powerful and flexible image visualization platform.
+	•	The development of this plugin was inspired by the need to handle large, multi-resolution microscopy datasets efficiently.
+	•	Contributions and feedback from the open-source community are greatly appreciated.
